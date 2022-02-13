@@ -2,22 +2,22 @@
 ## How to run and compile
 
 ## Implemented Core Functions
-`image stitching`
-- Taking the parameter of the images to be stitched this function calls the required function to generate the final stitched image
+`imageStitching`
+- Taking the images to be stitched as the argument, this function calls the required functions to generate the final stitched image
 
 <br />
 
 `calculateHomography`
-- Takes correspondences in between two images to calculate the homography matrix. After creating a matrix with those points numpy linear algebra avd is used to the u, v, s.
+- Takes correspondences in between two images to calculate the homography matrix. After creating a matrix with those points, numpy linear algebra svd is used to generate the u, v, s.
 <br />
 
 `ransac`
-- Randomly choosing 4 points out of valid matched keypoints in the images homography is calculated. Then finally checking the geometric distance to find whether they are inliers or outliers. The whole process will run until we find enough maximum number of inliers (which is defined using a definite threshold in my case which is 4.0)
+- Randomly choosing 4 points out of the valid matched keypoints in the images, homography is calculated. Then finally it checks the `geometricDistance` to find whether they are inliers or outliers. The whole process will run until we find enough maximum number of inliers (which is defined using a definite threshold, in my case which is 4.0)
 <br />
 
 `warpImage`
-- Takes the image needs to be warped with respect to the base image as parameter
-- Takes new image width and height and homography matrix as parameer
+- Takes the image required to be warped with respect to the base image as parameter
+- Takes the new image width, height and homography matrix as parameter
 - Calculates the transformed image corners 
 - Then interpolate the pixel values from the original image
 
@@ -25,13 +25,13 @@
 
 `Detect_Feature_And_KeyPoints`
 - `cv2.xfeatures2d.SIFT_create()` is used to get the descriptors of the images.
-- Then `detectAndCompute()` is used get the keypoints and features of the iamges.
+- Then `detectAndCompute()` is used to get the keypoints and features of the iamges.
 <br/>
 
 `matchKeypoints`
-- Using those keypoints, this function finds the all possible match.
-- Then using all possible match find only the valid matches using `All_validmatches()` using `lowe ratio`
-- Finally if the valid mathces is greater than 4 (not possible to find homography if it is less than 4) then it computers the homography m atrix using `ransac` function.
+- Using those keypoints, this function finds the all possible matches.
+- Then using all possible matches, find only the valid matches using `All_validmatches()` using `lowe ratio`
+- Finally, if the valid mathces is greater than 4 (not possible to find homography if it is less than 4), then it computes the homography matrix using `ransac` function.
 
 <br/>
 
@@ -53,7 +53,7 @@
 
 ## Folders
 `data`
-- Contains a set of 21 images files which need to be stitched together.
+- Contains a set of 21 image files which need to be stitched together.
 <br />
 
 `Intersection`
@@ -66,6 +66,17 @@
 ## Things to look out
 `Dataset`
 - The convention I have assumed is that the images are named as '0.jpg', '1.jpg' and so on.
-- Sometimes due to the MAC OS, .DS_store is created in the image folder. I have deleted them while counting the number of images present in a folder. So, if there is anything other than the image files, it may get error while compiling.
+- Sometimes due to the MAC OS, .DS_store is created in the image folder. I have deleted them while counting the number of images present in a folder. So, if there is anything other than the image files, it may get errors while compiling.
+
+<br />
+
+`References`
+- https://kushalvyas.github.io/stitching.html
+- https://docs.opencv.org/4.x/da/d54/group__imgproc__transform.html#gaf73673a7e8e18ec6963e3774e6a94b87
+- https://medium.com/swlh/image-processing-with-python-image-warping-using-homography-matrix-22096734f09a
+- https://github.com/avinashk442/Panoramic-Image-Stitching-using-invariant-features/blob/master/panorama.py
+- https://github.com/hughesj919/HomographyEstimation
+
+
 
 
