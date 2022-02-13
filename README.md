@@ -1,7 +1,7 @@
 # ImageStitching_281B
 ## How to run and compile
 
-## Implemented Main Functions
+## Implemented Core Functions
 `image stitching`
 - Taking the parameter of the images to be stitched this function calls the required function to generate the final stitched image
 
@@ -33,7 +33,15 @@
 - Then using all possible match find only the valid matches using `All_validmatches()` using `lowe ratio`
 - Finally if the valid mathces is greater than 4 (not possible to find homography if it is less than 4) then it computers the homography m atrix using `ransac` function.
 
+<br/>
 
+`Crop`
+- Cropping the extra black part of the image.
+
+<br/>
+
+`find_mid`
+- To find the middle image to take that image as the base image for left and right hand stitching.
 
 
 ## Files
@@ -54,4 +62,10 @@
 
 `panaroma`
 - An empty folder, the generated images from the algorithm will be saved here.
+
+## Things to look out
+`Dataset`
+- The convention I have assumed is that the images are named as '0.jpg', '1.jpg' and so on.
+- Sometimes due to the MAC OS, .DS_store is created in the image folder. I have deleted them while counting the number of images present in a folder. So, if there is anything other than the image files, it may get error while compiling.
+
 

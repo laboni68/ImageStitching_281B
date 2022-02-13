@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[30]:
+# In[1]:
 
 
 import numpy as np
@@ -31,9 +31,9 @@ class Panaroma:
         #to get perspective of image using computed homography
         (matches, Homography) = Values
         result_image = self.getwarp_perspective(imageA,imageB,Homography)
-        cv2.imwrite("panaroma/result.jpg",result_image)
+        #cv2.imwrite("panaroma/result.jpg",result_image)
         result_image[0:imageB.shape[0], 0:imageB.shape[1]] = imageB
-        cv2.imwrite("panaroma/result1.jpg",result_image)
+        #cv2.imwrite("panaroma/result1.jpg",result_image)
         
         return result_image
     def calculateHomography(self, correspondences):
@@ -150,31 +150,6 @@ class Panaroma:
                     if(pointX>=imageA.shape[1] or pointY>=imageA.shape[0] or pointX<0 or pointY<0):
                         continue
                     newimage[pheight][pwidth][k] = imageA[pointY][pointX][k]
-        
-        ''' for pixelHeight in range(imageA.shape[0]): #400  
-            for pixelWidth in range(imageA.shape[1]): #603
-                #newX = round((Homography[0, 0]*pixelHeight+Homography[0, 1]*pixelWidth+Homography[0, 2])/(Homography[2, 0]*pixelHeight+Homography[2, 1]*pixelWidth+Homography[2, 2]))
-                #newY = round((Homography[1, 0]*pixelHeight+Homography[1, 1]*pixelWidth+Homography[1, 2])/(Homography[2, 0]*pixelHeight+Homography[2, 1]*pixelWidth+Homography[2, 2]))
-                newX = ((Homography[0, 0]*pixelWidth+Homography[0, 1]*pixelHeight+Homography[0, 2])/(Homography[2, 0]*pixelWidth+Homography[2, 1]*pixelHeight+Homography[2, 2]))
-                newY = ((Homography[1, 0]*pixelWidth+Homography[1, 1]*pixelHeight+Homography[1, 2])/(Homography[2, 0]*pixelWidth+Homography[2, 1]*pixelHeight+Homography[2, 2]))
-                newX1=round(newX)
-                newY1=round(newY)
-                newX2=math.floor(newX)
-                newY2=math.floor(newY)
-                newX3=math.ceil(newX)
-                newY3=math.ceil(newY)
-                for k in range(3):
-                    if(newX1>=width or newY1>=height or newX1<0 or newY1<0) or (newX2>=width or newY2>=height or newX2<0 or newY2<0) or (newX3>=width or newY3>=height or newX3<0 or newY3<0):
-                        continue
-                    else:
-                        if(imageA[pixelHeight][pixelWidth][k]==0):
-                            continue
-                        newimage[newY1][newX1][k] = imageA[pixelHeight][pixelWidth][k]
-                        newimage[newY2][newX2][k] = imageA[pixelHeight][pixelWidth][k]
-                        newimage[newY3][newX3][k] = imageA[pixelHeight][pixelWidth][k]''' 
-       
-                        
-                        
                     
         return newimage
         
@@ -281,7 +256,7 @@ def find_mid(no_of_images):
     return (no_of_images+1)/2
 
 
-# In[32]:
+# In[3]:
 
 
 import copy
@@ -310,21 +285,29 @@ def crop(IMG_IN):
     cv2.imwrite(IMG_IN,crop)
 
 
-# In[34]:
+# In[4]:
 
 
 import imutils
 import cv2
 
+import os
+
+
 #Take picture from folder like: Hill1 & Hill2, scene1 & scene2, my1 & my2, taj1 & taj2, lotus1 & lotus2, beach1 & beach2, room1 & room2
 print("Enter the number of images you want to concantenate:")
-no_of_images = int(input())
+#no_of_images = int(input())
+directory = "intersection/"
+#os.remove(directory+".DS_store")
+no_of_images = len(os.listdir(directory))-1
+print(no_of_images)
 print("Enter the number of images you want to concantenate at a time:")
-m = int(input())
+#m = int(input())
+m = 2
 filename = []
 mid_image = int(find_mid(no_of_images))
 for i in range(no_of_images):
-    imageName = "intersection/"+str(i)+".jpg"
+    imageName = directory+str(i)+".jpg"
     filename.append(imageName)
 
 images = []
@@ -335,64 +318,27 @@ for i in range(no_of_images):
 #We need to modify the image resolution and keep our aspect ratio use the function imutils
 for i in range(no_of_images):
     images[i] = imutils.resize(images[i], width=400)
-
 for i in range(no_of_images):
     images[i] = imutils.resize(images[i], height=400)
     
 total_iterations = no_of_images 
 print("total number of iterations ", total_iterations)
-panaroma = Panaroma()
-
-'''
-    
-(result1, matched_points) = panaroma.image_stitch([images[mid_image-1], images[mid_image]], match_status=True)
-cv2.imwrite("panaroma/Panorama_image"+str(mid_image-1)+str(mid_image)+".jpg",result1)
-crop("panaroma/Panorama_image"+str(mid_image-1)+str(mid_image)+".jpg")
-result1 = cv2.imread("panaroma/Panorama_image"+str(mid_image-1)+str(mid_image)+".jpg")
-print(mid_image)
-for i in range(mid_image, no_of_images-2):
-    (result1, matched_points) = panaroma.image_stitch([result1, images[i+1]], match_status=True)
-    cv2.imwrite("panaroma/Panorama_image"+str(mid_image)+str(i+1)+".jpg",result1)
-    crop("panaroma/Panorama_image"+str(mid_image)+str(i+1)+".jpg")
-    cv2.imread("panaroma/Panorama_image"+str(mid_image)+str(i+1)+".jpg")
-    result1 = cv2.imread("panaroma/Panorama_image"+str(mid_image)+str(i+1)+".jpg")
-    
-return  
-(r, matched_points) = panaroma.image_stitch([images[mid_image-1], images[mid_image-2]], match_status=True)
-cv2.imwrite("panaroma/Panorama_image"+str(mid_image-1)+str(mid_image-2)+".jpg",r)
-crop("panaroma/Panorama_image"+str(mid_image-1)+str(mid_image-2)+".jpg")
-result = cv2.imread("panaroma/Panorama_image"+str(mid_image-1)+str(mid_image-2)+".jpg")
-for i in range(mid_image):
-    print("i : ", i)
-    (r, matched_points) = panaroma.image_stitch([result, images[mid_image-i-3]], match_status=True)
-    cv2.imwrite("panaroma/Panorama_image"+str(mid_image-i-2)+str((mid_image-i-3))+".jpg",r)
-    crop("panaroma/Panorama_image"+str(mid_image-i-2)+str(mid_image-i-3)+".jpg")
-    cv2.imread("panaroma/Panorama_image"+str(mid_image-i-2)+str(mid_image-i-3)+".jpg")
-    result = cv2.imread("panaroma/Panorama_image"+str(mid_image-i-2)+str(mid_image-i-3)+".jpg")
-(result1, matched_points) = panaroma.image_stitch([result1, result], match_status=True)
-cv2.imwrite("panaroma/Panorama_image.jpg",result1)
-crop("panaroma/Panorama_image.jpg")
-cv2.imread("panaroma/Panorama_image.jpg")'''
-
-    
+panaroma = Panaroma()    
 while(total_iterations>=2):
     total_iterations = total_iterations / m
     images1 = []
     for i in range(int(total_iterations)):
         (result) = panaroma.image_stitch([images[i*2], images[(i*2)+1]], match_status=True)
-        cv2.imwrite("panaroma/Panorama_image111"+str(int(total_iterations))+"_"+str(i*2)+str((i*2)+1)+".jpg",result)
+        #cv2.imwrite("panaroma/Panorama_image111"+str(int(total_iterations))+"_"+str(i*2)+str((i*2)+1)+".jpg",result)
         cv2.imwrite("panaroma/Panorama_image"+str(int(total_iterations))+"_"+str(i*2)+str((i*2)+1)+".jpg",result)
         crop("panaroma/Panorama_image"+str(int(total_iterations))+"_"+str(i*2)+str((i*2)+1)+".jpg")
         images1.append(cv2.imread("panaroma/Panorama_image"+str(int(total_iterations))+"_"+str(i*2)+str((i*2)+1)+".jpg"))
     images = []
     images = images1.copy()
+
+cv2.imwrite("panaroma/Panorama_image_final.jpg",images[0])
 print("end")
-'''
-if(total_iterations%2)==0:
-    mid_image = total_iterations/2
-else:
-    mid_image = (total_iterations+1)/2
-print("mid image", mid_image)'''
+
 
     
 
