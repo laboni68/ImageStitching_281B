@@ -76,7 +76,7 @@
 
 <br />
 
-`References`
+### References
 - https://kushalvyas.github.io/stitching.html
 - https://docs.opencv.org/4.x/da/d54/group__imgproc__transform.html#gaf73673a7e8e18ec6963e3774e6a94b87
 - https://medium.com/swlh/image-processing-with-python-image-warping-using-homography-matrix-22096734f09a
