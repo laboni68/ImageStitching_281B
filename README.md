@@ -63,10 +63,16 @@
 `panaroma`
 - An empty folder, the generated images from the algorithm will be saved here.
 
+`Report`
+- Report of the project which describes the key algorithms and challenges faced during the implementation.
+
 ## Things to look out
 `Dataset`
 - The convention I have assumed is that the images are named as '0.jpg', '1.jpg' and so on.
 - Sometimes due to the MAC OS, .DS_store is created in the image folder. I have deleted them while counting the number of images present in a folder. So, if there is anything other than the image files, it may get errors while compiling.
+
+
+
 
 <br />
 
